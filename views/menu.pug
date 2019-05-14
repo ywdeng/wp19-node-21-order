@@ -1,0 +1,111 @@
+extends layout
+
+block content
+  h1= title
+  hr
+  form(action="/order",method="post")
+    table
+      tbody
+        tr
+          th.right.empty 客戶名稱：
+          th.left.empty(colspan="6")
+            input.fillWidth(type="text",id="custName",name="custName",required='')
+        tr
+          th.right.empty 聯絡電話：
+          th.left.empty(colspan="6")
+            input.fillWidth(type="tel",id="custTel",name="custTel",required='')
+        tr
+          th.right.empty 送貨地址：
+          th.left.empty(colspan="6")
+            input.fillWidth(type="text",id="custAddr",name="custAddr",required='')  
+        tr
+          th 圖
+          th 品名
+          th 容量
+          th 冰
+          th 糖
+          th 單價
+          th 數量
+          th 小計
+        each prod in prodList
+          tr
+            td 
+              a(href=prod.pic, target="_blank") 
+                img(src=prod.pic, height="32px")
+            td.right= prod.name
+            td
+              input(
+                type="radio", 
+                name=prod.id+"Size", 
+                id=prod.id+"SizeS", 
+                value="S", 
+                onclick="unitPrice("+(prod.priceM-5)+",'"+prod.id+"Price','"+prod.id+"Qty','"+prod.id+"Sum')"
+              )
+              label(for=prod.id+"SizeS") 小杯(S)
+              input(
+                type="radio", 
+                name=prod.id+"Size", 
+                id=prod.id+"SizeM", 
+                value="M", 
+                checked='', 
+                onclick="unitPrice("+prod.priceM+",'"+prod.id+"Price','"+prod.id+"Qty','"+prod.id+"Sum')"
+              )
+              label(for=prod.id+"SizeM") 中杯(M)
+              input(
+                type="radio", 
+                name=prod.id+"Size", 
+                id=prod.id+"SizeL",
+                value="L", 
+                onclick="unitPrice("+prod.priceL+",'"+prod.id+"Price','"+prod.id+"Qty','"+prod.id+"Sum')"
+              )
+              label(for=prod.id+"SizeL") 大杯(L)
+              input(
+                type="radio", 
+                name=prod.id+"Size", 
+                id=prod.id+"SizeXL", 
+                value="XL", 
+                onclick="unitPrice("+(prod.priceL+5)+",'"+prod.id+"Price','"+prod.id+"Qty','"+prod.id+"Sum')"
+              )
+              label(for=prod.id+"SizeS") 特大杯(XL)
+            td
+              select(id=prod.id+"Ice", name=prod.id+"Ice")
+                option(value='0', selected='') 正常
+                option(value='1') 少冰
+                option(value='2') 去冰
+            td
+              select(id=prod.id+"Sugar", name=prod.id+"Sugar")
+                option(value='0', selected='') 正常
+                option(value='1') 減糖
+                option(value='2') 微糖
+                option(value='3') 無糖
+            td
+              input.right.narrowInput(
+                type="text", 
+                readonly="true", 
+                id=prod.id+"Price", 
+                name=prod.id+"Price", 
+                value=prod.priceM
+              )
+            td
+              input.right.narrowInput(
+                type="number", 
+                min="0", 
+                step="1", 
+                id=prod.id+"Qty", 
+                name=prod.id+"Qty", 
+                value="0", 
+                onchange="unitSum('"+prod.id+"Price','"+prod.id+"Qty','"+prod.id+"Sum')"
+              )
+            td
+              input.right.narrowInput(
+                type="text", 
+                readonly="true", 
+                id=prod.id+"Sum", 
+                name=prod.id+"Sum", 
+                value="0"
+              )
+
+    p.center 
+      input(type="submit")
+      | 
+      input(type="reset")

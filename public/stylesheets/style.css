@@ -1,0 +1,50 @@
+a {
+  color: #00B7FF;
+}
+
+body {
+  width: 95%;
+  margin: 1em auto;
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+
+table {
+  margin: 1em auto;
+}
+
+th {
+  border-top: solid thin lightgray;
+  border-bottom: solid thin lightgray;
+  padding: 4px 0.5em;
+}
+
+th.empty {
+  border: none;
+}
+
+td {
+  border-bottom: solid thin lightgray;
+  padding: 4px 0.5em;
+}
+
+.narrowInput {
+  width: 4em;
+}
+
+.fillWidth {
+  width: 100%;
+}
+
+.right {
+  text-align: right;
+}
+
+.center {
+  text-align: center;
+}
+
+.left {
+  text-align: left;
+}

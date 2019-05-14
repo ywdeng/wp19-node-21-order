@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  h1= title
+  hr
+  table
+    tbody      
+      tr
+        th 訂單編號
+        th 客戶名稱
+        th 訂購日期
+        th 數量
+        th 金額
+        th 送貨地址
+        th
+          | 
+      each p in orders
+        tr
+          td.right= p.id
+          td.left= p.custName
+          td.left= p.orderDate
+          td.right= p.qty
+          td.right= p.total
+          td.left= p.custAddr
+          td
+            a(href="/order/" + p.id) 詳細內容

@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  h1= title
+  hr
+  table
+    tbody
+      tr
+        th.right.empty 訂單編號：
+        th.left.empty(colspan="2")= order.id
+        th.right.empty 日期：
+        th.left.empty= order.orderDate
+      tr
+        th.right.empty 客戶名稱：
+        th.left.empty(colspan="5")= order.custName
+      tr
+        th.right.empty 聯絡電話：
+        th.left.empty(colspan="5")= order.custTel
+      tr
+        th.right.empty 送貨地址：
+        th.left.empty(colspan="5")= order.custAddr  
+      tr
+        th 品名
+        th 容量
+        th 單價
+        th 數量
+        th 小計
+        th 備註
+      each p in order.items
+        tr
+          td.right= p.name
+          td= p.size
+          td.right= p.price
+          td.right= p.qty
+          td.right= p.sum
+          td.left= p.note
+      tr
+        th.right(colspan="4") 訂單編號：
+        th.right= order.total
+        th 
+          | 
