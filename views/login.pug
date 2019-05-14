@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+    title 網路飲料店
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/javascripts/main.js')
+  body
+    h1.center 網路飲料店
+    hr
+    if errMsg
+      h2.center.error #{errMsg}，請重新登入：
+    else
+      h2.center 登入系統
+    form(action='/login', method='post')
+      table.login
+        tbody
+          tr
+            th.right 帳號：
+            td.left
+              if account
+                input.fillWidth(type='text', id='account', name='id', required='true', value=account)
+              else
+                input.fillWidth(type='text', id='account', name='id', required='true', placeholder='帳號或電話號碼')
+          tr
+            th.right 密碼：
+            td.left
+              input.fillWidth(type='password', id='password', name='passwd', required='true')
+      p.center
+        input(type='submit')
+        | 
+        input(type='reset')
+    

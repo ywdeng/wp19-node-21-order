@@ -1,26 +1,24 @@
 extends layout
 
 block content
-  h1= title
-  hr
-  table
+  table.menu
     tbody      
       tr
-        th 訂單編號
-        th 客戶名稱
-        th 訂購日期
-        th 數量
-        th 金額
-        th 送貨地址
-        th
+        th.menu 訂單編號
+        th.menu 客戶名稱
+        th.menu 訂購日期
+        th.menu 數量
+        th.menu 金額
+        th.menu 送貨地址
+        th.menu
           | 
       each p in orders
         tr
-          td.right= p.id
-          td.left= p.custName
-          td.left= p.orderDate
-          td.right= p.qty
-          td.right= p.total
-          td.left= p.custAddr
-          td
+          td.menu.right= p.id
+          td.menu.left= p.custName
+          td.menu.left= p.orderDate
+          td.menu.right= p.qty
+          td.menu.right= p.total
+          td.menu.left= p.custAddr
+          td.menu
             a(href="/order/" + p.id) 詳細內容

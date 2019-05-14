@@ -3,10 +3,12 @@ var router = express.Router();
 var prodSpec = require("../models/product.json");
 
 router.get('/', function (req, res, next) {
-  res.render("menu", {
-    title: "線上訂購飲料",
-    prodList: prodSpec.products
-  });
+  var viewbag = {};
+  viewbag.prodList = prodSpec.products;
+  if (req.session && req.session.user) {
+    viewbag.user = req.session.user;
+  }
+  res.render("menu", viewbag);
 });
 
 module.exports = router;

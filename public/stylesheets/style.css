@@ -10,11 +10,11 @@ body {
   color: white;
 }
 
-table {
+table.menu {
   margin: 1em auto;
 }
 
-th {
+th.menu {
   border-top: solid thin lightgray;
   border-bottom: solid thin lightgray;
   padding: 4px 0.5em;
@@ -24,7 +24,7 @@ th.empty {
   border: none;
 }
 
-td {
+td.menu {
   border-bottom: solid thin lightgray;
   padding: 4px 0.5em;
 }
@@ -47,4 +47,50 @@ td {
 
 .left {
   text-align: left;
+}
+
+table.login {
+  width: 16em;
+  margin: 1em auto;
+}
+
+table.nav {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+}
+
+tr.nav {
+  padding: 0px;
+  margin: 0px;
+  border: none;
+}
+
+td.nav {
+  padding: 0px 1em;
+  border: none;
+  width: 25%;
+}
+
+a.navItem {
+  font: bold;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
+}
+
+.error {
+  font-weight: bolder;
+  color: red;
+}
+
+span.userInfo {
+  font-weight: bold;
+  color:lightblue;
+  margin-right: 1em;
 }

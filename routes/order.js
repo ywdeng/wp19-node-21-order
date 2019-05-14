@@ -30,7 +30,7 @@ router.get('/', function (req, res, next) {
 
 // 顯示指定的訂單 
 router.get('/:id', function (req, res, next) {
-    var item = orderDAO.load(req.params.id);
+    var item = orderDAO.findByID(req.params.id);
     if (item && item.id) {
         res.render("orderDetail", {
             title: "客戶訂單",

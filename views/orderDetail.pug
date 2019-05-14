@@ -1,9 +1,7 @@
 extends layout
 
 block content
-  h1= title
-  hr
-  table
+  table.menu
     tbody
       tr
         th.right.empty 訂單編號：
@@ -20,22 +18,22 @@ block content
         th.right.empty 送貨地址：
         th.left.empty(colspan="5")= order.custAddr  
       tr
-        th 品名
-        th 容量
-        th 單價
-        th 數量
-        th 小計
-        th 備註
+        th.menu 品名
+        th.menu 容量
+        th.menu 單價
+        th.menu 數量
+        th.menu 小計
+        th.menu 備註
       each p in order.items
         tr
-          td.right= p.name
-          td= p.size
-          td.right= p.price
-          td.right= p.qty
-          td.right= p.sum
-          td.left= p.note
+          td.menu.right= p.name
+          td.menu= p.size
+          td.menu.right= p.price
+          td.menu.right= p.qty
+          td.menu.right= p.sum
+          td.menu.left= p.note
       tr
-        th.right(colspan="4") 訂單編號：
-        th.right= order.total
-        th 
+        th.menu.right(colspan="4") 訂單編號：
+        th.menu.right= order.total
+        th.menu 
           | 
