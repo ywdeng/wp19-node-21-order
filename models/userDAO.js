@@ -26,6 +26,26 @@ class UserDAO extends baseClass.DAO {
     }
 
     /**
+     * 增加使用者
+     * @param {*} obj 
+     */
+    append(obj) {
+        if (!obj) return false; // 出錯，回傳 false
+        var list = this.loadAll();
+        if (Array.isArray(obj)) {
+            // 輸入是陣列
+            for (var i = 0; i < obj.length; i++) {
+                list.push(obj[i]);
+            }
+        } else {
+            list.push(obj);
+        }
+        // 全部儲存
+        this.storeAll(list);
+        return list[list.length - 1].id;
+    }
+
+    /**
      * 驗證帳號密碼
      * @param {*} id 帳號
      * @param {*} passwd 密碼

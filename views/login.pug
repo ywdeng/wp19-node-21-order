@@ -1,32 +1,33 @@
-doctype html
-html
-  head
-    title 網路飲料店
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src='/javascripts/main.js')
-  body
-    h1.center 網路飲料店
-    hr
-    if errMsg
-      h2.center.error #{errMsg}，請重新登入：
-    else
-      h2.center 登入系統
-    form(action='/login', method='post')
-      table.login
-        tbody
-          tr
-            th.right 帳號：
-            td.left
-              if account
-                input.fillWidth(type='text', id='account', name='id', required='true', value=account)
-              else
-                input.fillWidth(type='text', id='account', name='id', required='true', placeholder='帳號或電話號碼')
-          tr
-            th.right 密碼：
-            td.left
+extends layoutNoNav
+
+block content
+  if errMsg
+    h2.center.errorMessage= errMsg
+  else if infoMsg
+    h2.center.infoMessage= infoMsg
+  else
+    h2.center 登入系統
+  form(action='/login', method='post')
+    if pageAfterLogin
+      input(type='hidden', name='pageAfterLogin', value=pageAfterLogin)
+    table.login
+      tbody
+        tr
+          th.right 帳號：
+          td.left
+            if account
+              input.fillWidth(type='text', id='account', name='account', required='true', value=account, readonly='true')
+            else
+              input.fillWidth(type='text', id='account', name='account', required='true', placeholder='帳號或電話號碼', autofocus='true')
+        tr
+          th.right 密碼：
+          td.left
+            if account
+              input.fillWidth(type='password', id='password', name='passwd', required='true', autofocus='true')
+            else
               input.fillWidth(type='password', id='password', name='passwd', required='true')
-      p.center
-        input(type='submit')
-        | 
-        input(type='reset')
+    p.center
+      input(type='submit')
+      | 
+      input(type='reset')
     

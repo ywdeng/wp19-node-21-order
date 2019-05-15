@@ -7,10 +7,11 @@ block content
         th.right.empty 訂單編號：
         th.left.empty(colspan="2")= order.id
         th.right.empty 日期：
-        th.left.empty= order.orderDate
+        th.left.empty(colspan="2")= order.orderDate
       tr
         th.right.empty 客戶名稱：
-        th.left.empty(colspan="5")= order.custName
+        th.left.empty(colspan="5")           
+          span(title='客戶帳號：'+order.userId)= order.custName
       tr
         th.right.empty 聯絡電話：
         th.left.empty(colspan="5")= order.custTel
@@ -33,7 +34,7 @@ block content
           td.menu.right= p.sum
           td.menu.left= p.note
       tr
-        th.menu.right(colspan="4") 訂單編號：
+        th.menu.right(colspan="4") 合計：
         th.menu.right= order.total
         th.menu 
           | 

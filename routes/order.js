@@ -2,29 +2,33 @@ var createError = require('http-errors');
 var express = require('express');
 var router = express.Router();
 var orderDAO = require('../models/orderDAO');
+var userDAO = require('../models/userDAO');
 var prodSpec = require("../models/product.json");
 
 // 列出所有的訂單
 router.get('/', function (req, res, next) {
-    var list = orderDAO.loadAll();
-    if (list && (list.length > 0)) {
-        // 排序，從新到舊
-        list.sort((x, y) => y.id - x.id);
+    if (req.session && req.session.user) {
+        var viewbag = { user: req.session.user };
+        var list = (viewbag.user.isAdmin) ? orderDAO.loadAll() : orderDAO.findByUserId(viewbag.user.id);
+        if (list && (list.length > 0)) {
+            // 排序，從新到舊
+            list.sort((x, y) => y.id - x.id);
 
-        // 計算每一張訂單的總杯數
-        list.forEach(x => {
-            var qty = 0;
-            x.items.forEach(m => {
-                qty += Number(m.qty);
+            // 計算每一張訂單的總杯數
+            list.forEach(x => {
+                var qty = 0;
+                x.items.forEach(m => {
+                    qty += Number(m.qty);
+                });
+                x.qty = qty; // 總共幾杯
             });
-            x.qty = qty; // 總共幾杯
-        });
-        res.render("order", {
-            title: "訂購清單",
-            orders: list
-        });
+            viewbag.orders = list;
+        } else {
+            viewbag.orders = false;
+        }
+        res.render("order", viewbag);
     } else {
-        res.send("<h1 style='text-align:center;color:red;margin:2em'>沒有訂單</h1>");
+        res.redirect('/login');
     }
 });
 
@@ -32,17 +36,17 @@ router.get('/', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
     var item = orderDAO.findByID(req.params.id);
     if (item && item.id) {
-        res.render("orderDetail", {
-            title: "客戶訂單",
-            order: item
-        });
+        var viewbag = { order: item };
+        if (req.session && req.session.user) {
+            viewbag.user = req.session.user;
+        }
+        return res.render("orderDetail", viewbag);
     } else {
         next(createError(404));
     }
 });
 
-// 建立新訂單
-router.post("/", function (req, res) {
+function createOrder(req) {
     var list = [];
     var total = 0;
     for (var i = 0; i < prodSpec.products.length; i++) {
@@ -81,16 +85,40 @@ router.post("/", function (req, res) {
         }
     }
     var now = new Date();
-    var id = orderDAO.append({
+    var ordr = {
         custName: req.body.custName,
         custTel: req.body.custTel,
         custAddr: req.body.custAddr,
         items: list,
         total: total,
         orderDate: now.toLocaleString('zh-Tw', { timeZone: 'Asia/Taipei' })
-    });
+    };
+    return ordr;
+}
 
-    res.redirect("/order/" + id);
+// 建立新訂單
+router.post("/", function (req, res, next) {
+    var order = createOrder(req);
+    if (req.session && req.session.user) {
+        // user place order after login
+        order.userId = req.session.user.id;
+        var id = orderDAO.append(order);
+        res.redirect("/order/" + id);
+    } else {
+        order.userId = userDAO.tel2ID(order.custTel); // 電話號碼就是帳號
+        var id = orderDAO.append(order);
+        var user = userDAO.findByID(order.userId);
+        req.session.pageAfterLogin = "/order/" + id;
+        if (user && user.id) {
+            // 請舊用戶登入
+            req.session.loginUser = user;
+            res.redirect('/login');
+        } else {
+            // 建立新帳號
+            req.session.newUser = { id: order.userId, name: order.custName, tel: order.custTel, addr: order.custAddr, isAdmin: false };
+            res.redirect('/user/new');
+        }
+    }
 });
 
 

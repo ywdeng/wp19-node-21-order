@@ -3,7 +3,7 @@ a {
 }
 
 body {
-  width: 95%;
+  width: 90%;
   margin: 1em auto;
   text-align: center;
   background-color: black;
@@ -49,6 +49,11 @@ td.menu {
   text-align: left;
 }
 
+table.account {
+  width: 32em;
+  margin: 1em auto;
+}
+
 table.login {
   width: 16em;
   margin: 1em auto;
@@ -84,13 +89,18 @@ a.navItem {
   border-left: 1px solid #CCCCCC;
 }
 
-.error {
+.errorMessage {
   font-weight: bolder;
   color: red;
 }
 
-span.userInfo {
+.infoMessage {
+  font-weight: bolder;
+  color: white;
+}
+
+.userInfo {
   font-weight: bold;
-  color:lightblue;
+  color: lightyellow;
   margin-right: 1em;
 }

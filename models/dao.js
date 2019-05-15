@@ -37,17 +37,6 @@ class DAO {
     }
 
     /**
-     * 增加一筆紀錄
-     */
-    append(obj) {
-        var json = JSON.stringify(obj); //convert it back to json
-        fs.appendFile(this.dataFile, json, 'utf8', (err) => {
-            if (err) throw err;
-            console.log(this.dataFile + ' has been updated successfully.');
-        });
-    }
-
-    /**
      * 載入指定 id 的訂單
      * @param {int} id  
      */

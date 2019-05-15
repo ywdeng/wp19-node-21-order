@@ -40,6 +40,17 @@ class OrderDAO extends baseClass.DAO {
         // 回傳最後一張訂單的 id
         return list[list.length - 1].id;
     }
+
+    findByUserId(userId) {
+        var found = [];
+        var list = this.loadAll();
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].userId == userId) {
+                found.push(list[i]);
+            }
+        }
+        return found;
+    }
 }
 
 module.exports = new OrderDAO("order.json");

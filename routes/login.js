@@ -3,36 +3,43 @@ const router = express.Router();
 const userDAO = require('../models/userDAO');
 
 router.get('/', function (req, res, next) {
+    var pageAfterLogin = false;
+    var user = false;
     if (req.session) {
-        // delete session if any
+        if (req.session.pageAfterLogin) {
+            pageAfterLogin = req.session.pageAfterLogin;
+        }
+        if (req.session.loginUser) {
+            user = req.session.loginUser;
+        }
         req.session.destroy((err) => {
             if (err) console.log(err);
         });
     }
-    res.render('login');
+    var viewbag = { pageAfterLogin: pageAfterLogin, account: (user ? user.id : false) };
+    res.render('login', viewbag);
 });
 
 router.post('/', function (req, res, next) {
-    if (req.body.id && req.body.passwd) {
-        userDAO.authenticate(req.body.id, req.body.passwd, (err, user) => {
+    if (req.body.account && req.body.passwd) {
+        userDAO.authenticate(req.body.account, req.body.passwd, (err, user) => {
             if (err) {
-                return res.render('login', {
-                    account: req.body.id,
-                    errMsg: err.message
-                });
+                var viewbag = { account: req.body.account, errMsg: err.message + "，請重新登入：" };
+                if (req.body.pageAfterLogin) {
+                    viewbag.pageAfterLogin = req.body.pageAfterLogin;
+                }
+                return res.render('login', viewbag);
             } else {
                 req.session.user = user;
-                if (req.session.previousPage) {
-                    res.redirect(req.session.previousPage);
+                if (req.body.pageAfterLogin) {
+                    res.redirect(req.body.pageAfterLogin);
+                } else {
+                    res.redirect("/");
                 }
-                res.redirect("/");
             }
         });
     } else {
-        res.render('/login', {
-            account: '',
-            errMsg: ''
-        });
+        res.render('/login');
     }
 });
 

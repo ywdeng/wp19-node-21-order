@@ -11,6 +11,7 @@ const menuRouter = require('./routes/menu');
 const orderRouter = require('./routes/order');
 const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
+const userRouter = require('./routes/user');
 
 var app = express();
 
@@ -24,22 +25,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// session settings
 app.use(session({
   cookie: { maxAge: 86400000 },
   store: new MemoryStore({
     checkPeriod: 86400000 // prune expired entries every 24h
   }),
   secret: 'keyboard cat',
-  resave: true,
+  resave: false,
   saveUninitialized: true
-}))
+}));
 
 app.use('/', indexRouter);
 app.use('/menu', menuRouter);
 app.use('/order', orderRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
+app.use('/user', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "set DEBUG=wp19-node-21-order:* & nodemon ./bin/www",
+    "test": "set DEBUG=wp19-node-21-order:* & node ./bin/www",
     "start": "node ./bin/www"
   },
   "dependencies": {
