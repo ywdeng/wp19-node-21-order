@@ -27,6 +27,9 @@ block content
             else
               input.fillWidth(type='password', id='password', name='passwd', required='true')
     p.center
+      input(type='checkbox', id='rememberMe', name='rememberMe')
+      label(for='rememberMe', title='24小時之內不需重新登入') 記住我
+      | 
       input(type='submit')
       | 
       input(type='reset')

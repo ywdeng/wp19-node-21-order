@@ -13,6 +13,8 @@ const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
 const userRouter = require('./routes/user');
 
+const rememberMe = require('./rememberMe');
+
 var app = express();
 
 // view engine setup
@@ -26,7 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  cookie: { maxAge: 86400000 },
+  cookie: { maxAge: 60000 },
   store: new MemoryStore({
     checkPeriod: 86400000 // prune expired entries every 24h
   }),
@@ -34,6 +36,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+
+app.use(rememberMe.middle);  
 
 app.use('/', indexRouter);
 app.use('/menu', menuRouter);

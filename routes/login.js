@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userDAO = require('../models/userDAO');
+const rememberMe = require('../rememberMe');
 
 router.get('/', function (req, res, next) {
     var pageAfterLogin = false;
@@ -31,6 +32,9 @@ router.post('/', function (req, res, next) {
                 return res.render('login', viewbag);
             } else {
                 req.session.user = user;
+                if (req.body.rememberMe) {
+                    rememberMe.setCookie(res, 'rememberMe', user.id);
+                }
                 if (req.body.pageAfterLogin) {
                     res.redirect(req.body.pageAfterLogin);
                 } else {
