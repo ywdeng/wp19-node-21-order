@@ -13,7 +13,7 @@ const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
 const userRouter = require('./routes/user');
 
-const rememberMe = require('./rememberMe');
+const rememberMe = require('./remember-me');
 
 var app = express();
 
