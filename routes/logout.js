@@ -1,11 +1,13 @@
 var express = require('express');
 var router = express.Router();
-const rememberMe = require('../rememberMe');
+const rememberMe = require('../remember-me');
 
 router.get('/', function (req, res, next) {
+    // destroy cookie
     if (req.cookies && req.cookies.rememberMe) {
         rememberMe.clearCookie(res);
     }
+    // destroy session
     if (req.session) {
         // delete session
         req.session.destroy((err) => {

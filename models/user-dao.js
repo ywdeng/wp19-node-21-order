@@ -1,4 +1,5 @@
 const baseClass = require('./dao');
+const crypto = require('crypto');
 
 /**
  * 帳號資料存取
@@ -26,8 +27,21 @@ class UserDAO extends baseClass.DAO {
     }
 
     /**
+     * 建立用戶密碼的雜湊值
+     * @param {*} userId 
+     * @param {*} passwordPlaintext 
+     */
+    passwordHash(userId, passwordPlaintext) {
+        var hash = crypto.createHash('sha256');
+        var salted = userId + passwordPlaintext;
+        hash.update(salted);
+        var cipher = hash.digest('hex');
+        return cipher;
+    }
+
+    /**
      * 增加使用者
-     * @param {*} obj 
+     * @param {*} obj 新使用者，可以是單一使用者物件，也可以是使用者物件的陣列
      */
     append(obj) {
         if (!obj) return false; // 出錯，回傳 false
@@ -35,9 +49,11 @@ class UserDAO extends baseClass.DAO {
         if (Array.isArray(obj)) {
             // 輸入是陣列
             for (var i = 0; i < obj.length; i++) {
+                obj[i].password = this.passwordHash(obj[i].id, obj[i].password);
                 list.push(obj[i]);
             }
         } else {
+            obj.password = this.passwordHash(obj.id, obj.password);
             list.push(obj);
         }
         // 全部儲存
@@ -53,13 +69,20 @@ class UserDAO extends baseClass.DAO {
      */
     authenticate(id, passwd, callback) {
         var u = this.findByID(id);
-        if (u && u.password && (u.password === passwd)) {
+        var pwd = this.passwordHash(id, passwd);
+        if (u && u.password && (pwd === u.password)) {
             return callback(null, u);
         }
         var err = new Error("帳號或密碼錯誤!");
         return callback(err);
     }
 
+    /**
+     * 進入受管制的頁面前，強制用戶登入
+     * @param {*} req Request
+     * @param {*} res Response
+     * @param {*} next Next
+     */
     forceLogin(req, res, next) {
         if (req.session && req.session.user) {
             //console.log('User ' + req.session.user.id + ' already login.');

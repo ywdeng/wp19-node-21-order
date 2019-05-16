@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const userDAO = require('../models/userDAO');
+const userDAO = require('../models/user-dao');
 
 /* Create new user */
 router.get('/new', function (req, res, next) {
@@ -24,7 +24,7 @@ router.get('/new', function (req, res, next) {
         tel: (user ? user.tel : false),
         addr: (user ? user.addr : false)
     };
-    res.render('createUser', viewbag);
+    res.render('create-user', viewbag);
 });
 
 /* Create new user */

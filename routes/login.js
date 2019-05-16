@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const userDAO = require('../models/userDAO');
-const rememberMe = require('../rememberMe');
+const userDAO = require('../models/user-dao');
+const rememberMe = require('../remember-me');
 
 router.get('/', function (req, res, next) {
     var pageAfterLogin = false;
@@ -23,7 +23,8 @@ router.get('/', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
     if (req.body.account && req.body.passwd) {
-        userDAO.authenticate(req.body.account, req.body.passwd, (err, user) => {
+        id = userDAO.tel2ID(req.body.account); // user may use tel no instead of id
+        userDAO.authenticate(id, req.body.passwd, (err, user) => {
             if (err) {
                 var viewbag = { account: req.body.account, errMsg: err.message + "，請重新登入：" };
                 if (req.body.pageAfterLogin) {

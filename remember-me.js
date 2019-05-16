@@ -1,4 +1,4 @@
-const userDAO = require('./models/userDAO');
+const userDAO = require('./models/user-dao');
 
 /**
  * Use cookie to remember user login

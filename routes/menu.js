@@ -3,8 +3,7 @@ var router = express.Router();
 var prodSpec = require("../models/product.json");
 
 router.get('/', function (req, res, next) {
-  var viewbag = {};
-  viewbag.prodList = prodSpec.products;
+  var viewbag = { prodList: prodSpec.products };
   if (req.session && req.session.user) {
     viewbag.user = req.session.user;
   }

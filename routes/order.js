@@ -1,8 +1,8 @@
 var createError = require('http-errors');
 var express = require('express');
 var router = express.Router();
-var orderDAO = require('../models/orderDAO');
-var userDAO = require('../models/userDAO');
+var orderDAO = require('../models/order-dao');
+var userDAO = require('../models/user-dao');
 var prodSpec = require("../models/product.json");
 
 // 列出所有的訂單
@@ -35,7 +35,7 @@ router.get('/:id', userDAO.forceLogin, (req, res, next) => {
     if (item && item.id) {
         if (item.userId == req.session.user.id)
             viewbag.order = item;
-        return res.render("orderDetail", viewbag);
+        return res.render("order-detail", viewbag);
     } else {
         next(createError(404));
     }
