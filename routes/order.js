@@ -6,40 +6,35 @@ var userDAO = require('../models/userDAO');
 var prodSpec = require("../models/product.json");
 
 // 列出所有的訂單
-router.get('/', function (req, res, next) {
-    if (req.session && req.session.user) {
-        var viewbag = { user: req.session.user };
-        var list = (viewbag.user.isAdmin) ? orderDAO.loadAll() : orderDAO.findByUserId(viewbag.user.id);
-        if (list && (list.length > 0)) {
-            // 排序，從新到舊
-            list.sort((x, y) => y.id - x.id);
+router.get('/', userDAO.forceLogin, (req, res, next) => {
+    var viewbag = { user: req.session.user };
+    var list = (viewbag.user.isAdmin) ? orderDAO.loadAll() : orderDAO.findByUserId(viewbag.user.id);
+    if (list && (list.length > 0)) {
+        // 排序，從新到舊
+        list.sort((x, y) => y.id - x.id);
 
-            // 計算每一張訂單的總杯數
-            list.forEach(x => {
-                var qty = 0;
-                x.items.forEach(m => {
-                    qty += Number(m.qty);
-                });
-                x.qty = qty; // 總共幾杯
+        // 計算每一張訂單的總杯數
+        list.forEach(x => {
+            var qty = 0;
+            x.items.forEach(m => {
+                qty += Number(m.qty);
             });
-            viewbag.orders = list;
-        } else {
-            viewbag.orders = false;
-        }
-        res.render("order", viewbag);
+            x.qty = qty; // 總共幾杯
+        });
+        viewbag.orders = list;
     } else {
-        res.redirect('/login');
+        viewbag.orders = false;
     }
+    res.render("order", viewbag);
 });
 
 // 顯示指定的訂單 
-router.get('/:id', function (req, res, next) {
+router.get('/:id', userDAO.forceLogin, (req, res, next) => {
+    var viewbag = { user: req.session.user };
     var item = orderDAO.findByID(req.params.id);
     if (item && item.id) {
-        var viewbag = { order: item };
-        if (req.session && req.session.user) {
-            viewbag.user = req.session.user;
-        }
+        if (item.userId == req.session.user.id)
+            viewbag.order = item;
         return res.render("orderDetail", viewbag);
     } else {
         next(createError(404));
@@ -106,7 +101,7 @@ router.post("/", function (req, res, next) {
         res.redirect("/order/" + id);
     } else {
         order.userId = userDAO.tel2ID(order.custTel); // 電話號碼就是帳號
-        var id = orderDAO.append(order);
+        var id = orderDAO.append(order); // 先儲存訂單
         var user = userDAO.findByID(order.userId);
         req.session.pageAfterLogin = "/order/" + id;
         if (user && user.id) {

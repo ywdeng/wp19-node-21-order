@@ -8,7 +8,7 @@ class RememberMe {
         this.cookieMaxAge = cookieMaxAge;
     }
 
-    middle(req, res, next) {
+    checkCookie(req, res, next) {
         if (req.session && req.session.user) {
             console.log('User ' + req.session.user.id + ' already login.');
         } else if (req.cookies && req.cookies.rememberMe) {

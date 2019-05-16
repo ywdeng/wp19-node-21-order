@@ -37,7 +37,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
-app.use(rememberMe.middle);  
+app.use(rememberMe.checkCookie);  
 
 app.use('/', indexRouter);
 app.use('/menu', menuRouter);

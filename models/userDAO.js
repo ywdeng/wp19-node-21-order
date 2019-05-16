@@ -59,6 +59,16 @@ class UserDAO extends baseClass.DAO {
         var err = new Error("帳號或密碼錯誤!");
         return callback(err);
     }
+
+    forceLogin(req, res, next) {
+        if (req.session && req.session.user) {
+            //console.log('User ' + req.session.user.id + ' already login.');
+            next();
+        } else {
+            req.session.pageAfterLogin = req.originalUrl;
+            res.redirect("/login");
+        }        
+    }
 }
 
 module.exports = new UserDAO("user.json");
