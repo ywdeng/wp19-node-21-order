@@ -8,6 +8,5 @@
 1. Run `git clone https://github.com/ywdeng/wp19-node-21-order.git`
 1. Run `cd wp19-node-21-order`
 1. Run `npm install`
-1. Run `npm -g install nodemon`
 1. Run `npm run test`
 1. Visit [http://localhost:3456](http://localhost:3456)
