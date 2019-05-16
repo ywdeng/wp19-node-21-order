@@ -1,6 +1,6 @@
-# Authentication & Authorization
+# Authentication, Authorization and Session Management
 
-範例：訂單管理
+範例：訂單管理，示範用戶登入、權限控管以及 Session 管理
 
 ## Run locally
 
@@ -10,4 +10,4 @@
 1. Run `npm install`
 1. Run `npm -g install nodemon`
 1. Run `npm run test`
-1. Visit [http://localhost:3000](http://localhost:3000)
+1. Visit [http://localhost:3456](http://localhost:3456)
