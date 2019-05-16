@@ -1,15 +1,13 @@
 {
   "name": "wp19-node-21-order",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "test": "set DEBUG=wp19-node-21-order:* & node ./bin/www",
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
     "cookie-parser": "^1.4.3",
-    "crypto": "^1.0.1",
     "debug": "^2.6.9",
     "express": "^4.16.0",
     "express-session": "^1.16.1",
